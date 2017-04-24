@@ -1,0 +1,13 @@
+﻿p q r
+a b
+a b s Z 
+p
+Z
+r
+p ^ Z q sZ ^
+q ^ s q asbs 1
+q ^ s q bsas 2
+q ^ s q ^ 3
+q a a q ^ ^
+q b b q ^ ^
+q ^ Z r Z ^
