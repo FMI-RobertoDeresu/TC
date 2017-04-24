@@ -24,7 +24,7 @@ ATENTIE! La predare, voi testa programele cu alte date de intrare.
 
 Tema 2
 
-ERMEN DE PREDARE PENTRU PROIECTUL 2: 14 - 30 aprilie 2017. 
+TERMEN DE PREDARE PENTRU PROIECTUL 2: 14 - 30 aprilie 2017. 
 Fiecare proiect poate fi ales de 3-4 persoane.
 Proiectele 1, 2, 6 vor fi realizate individual. La proiectele 3, 4, 5 puteti forma echipe de cate 2 persoane.
 
