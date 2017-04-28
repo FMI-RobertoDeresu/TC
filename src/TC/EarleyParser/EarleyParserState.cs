@@ -23,11 +23,11 @@ namespace TC.EarleyParser
 
         public char DotsNext => !IsComplete ? Right[DotPosition + 1] : '\0';
 
-        public string DotToRight => !IsComplete ? Right.Insert(DotPosition + 1, ".").Remove(DotPosition, 1) : Right;
+        public string DotToRight => !IsComplete ? Right.Insert(DotPosition + 2, ".").Remove(DotPosition, 1) : Right;
 
         public bool Equals(EarleyParserState other)
         {
-            return Left == other.Left && Right == other.Right;
+            return Left == other.Left && Right == other.Right && Origin == other.Origin;
         }
 
         public override string ToString()

@@ -26,32 +26,45 @@ namespace TC.EarleyParser
 
         public Grammar Grammar { get; set; }
 
-        public string[] Compute(string input)
+        public List<string> Compute(string input)
         {
             var output = new List<string>();
-            var s = new List<EarleyParserSet>();
+            var s = new List<EarleyParserSet> { new EarleyParserSet(0) };
+            output.Add($"S(0): {input.Insert(0, ".")}");
 
-            output.Add(input.Insert(0, "."));
-            output.Add(new string('-', 100));
-            s.Add(new EarleyParserSet(0));
-            s.First().AddState(Constants.GrammarPreStartSymbol, Grammar.S, 0);
-            s = Complete('\0', 0, Predict('\0', 0, Scan('\0', 0, s, output), output), output);
+            s.First().AddState($"{Grammar.S}'", $".{Grammar.S}", 0);
+            output.Add($"(1) {s.First().States.First()} # start rule");
+
+            s = SPC('\0', 0, s, output);
             output.Add(string.Empty);
 
+            var cs = s;
             for (var i = 1; i <= input.Length; i++)
-            {
-                var a = input[i - 1];
-                output.Add(input.Insert(i, "."));
-                output.Add(new string('-', 100));
+            {             
                 s.Add(new EarleyParserSet(i));
-                s = Complete(a, i, Predict(a, i, Scan(a, i, s, output), output), output);
+                output.Add($"S({i}): {input.Insert(i, ".")}");
+
+                s = SPC(input[i - 1], i, s, output);
                 output.Add(string.Empty);
             }
 
             var accepted = s.LastOrDefault()?.IsComplete(Grammar.S) ?? false;
             output.Add(accepted ? "Accepted!" : "Rejected!");
 
-            return output.ToArray();
+            return output;
+        }
+
+        public List<EarleyParserSet> SPC(char a, int i, List<EarleyParserSet> S, List<string> output)
+        {
+            var hasChanges = true;
+            while (hasChanges)
+            {
+                var l = S[i].States.Count;
+                S = Complete(i, Predict(i, Scan(a, i, S, output), output), output);
+                hasChanges = l != S[i].States.Count;
+            }
+
+            return S;
         }
 
         public List<EarleyParserSet> Scan(char a, int i, List<EarleyParserSet> S, List<string> output)
@@ -68,14 +81,14 @@ namespace TC.EarleyParser
                 {
                     var newState = currentSet.AddState(state.Left, state.DotToRight, state.Origin);
                     if (newState != null)
-                        output.Add($"({currentSet.Size}) {newState} # scan from S({i - 1})({stateIndex})");
+                        output.Add($"({currentSet.Size}) {newState} # scan from S({i - 1})({stateIndex + 1})");
                 }
             }
 
             return S;
         }
 
-        public List<EarleyParserSet> Predict(char a, int i, List<EarleyParserSet> S, List<string> output)
+        public List<EarleyParserSet> Predict(int i, List<EarleyParserSet> S, List<string> output)
         {
             var currentSet = S.Last();
             var hasNewPredictions = true;
@@ -93,7 +106,7 @@ namespace TC.EarleyParser
                         if (newState != null)
                         {
                             hasNewPredictions = true;
-                            output.Add($"({currentSet.Size}) {newState} # predict from({stateIndex})");
+                            output.Add($"({currentSet.Size}) {newState} # predict from ({stateIndex + 1})");
                         }
                     }
                 }
@@ -102,7 +115,7 @@ namespace TC.EarleyParser
             return S;
         }
 
-        public List<EarleyParserSet> Complete(char a, int i, List<EarleyParserSet> S, List<string> output)
+        public List<EarleyParserSet> Complete(int i, List<EarleyParserSet> S, List<string> output)
         {
             var currentSet = S.Last();
             var hasNewCompletedStates = true;
@@ -111,21 +124,22 @@ namespace TC.EarleyParser
             {
                 hasNewCompletedStates = false;
                 var currentStates = currentSet.States.ToList();
-                foreach (var completeState in currentStates.Where(x => x.IsComplete))
+                var completeStates = currentStates.Where(x => x.IsComplete).ToList();
+                foreach (var completeState in completeStates)
                 {
                     var completeStateIndex = currentStates.IndexOf(completeState);
-                    foreach (var prevSet in S.Take(i - 1))
+                    foreach (var prevSet in S.Where(x => x.Index == completeState.Origin).ToArray().Reverse())
                     {
                         var prevSetIndex = S.IndexOf(prevSet);
-                        foreach (var prevState in prevSet.States.Where(x => x.DotsNext.ToString() == completeState.Left))
+                        foreach (var prevState in prevSet.States.Where(x => x.DotsNext.ToString() == completeState.Left).Reverse())
                         {
                             var prevStateIndex = prevSet.States.IndexOf(prevState);
                             var newState = currentSet.AddState(prevState.Left, prevState.DotToRight, prevState.Origin);
                             if (newState != null)
                             {
                                 hasNewCompletedStates = true;
-                                output.Add($"({currentSet.Size}) {newState} # complete from({completeStateIndex}) and " +
-                                           $"S({prevSetIndex})({prevStateIndex})");
+                                output.Add($"({currentSet.Size}) {newState} # complete from ({completeStateIndex + 1}) and " +
+                                           $"S({prevSetIndex})({prevStateIndex + 1})");
                             }
                         }
                     }

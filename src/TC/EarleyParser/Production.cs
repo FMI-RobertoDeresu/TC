@@ -14,6 +14,8 @@
     /// </summary>
     public class Production
     {
+        private string _right;
+
         public Production(string left, string right)
         {
             Left = left;
@@ -22,6 +24,17 @@
 
         public string Left { get; set; }
 
-        public string Right { get; set; }
+        public string Right
+        {
+            get { return _right.Replace(Constants.Lambda.ToString(), ""); }
+            private set { _right = value; }
+        }
+
+        public bool IsLambdaProduction => _right == Constants.Lambda.ToString();
+
+        public override string ToString()
+        {
+            return $"{Left} -> {Right}";
+        }
     }
 }

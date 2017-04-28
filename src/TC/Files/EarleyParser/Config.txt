@@ -1,5 +1,5 @@
-﻿E
-n
-E
-E -> E+E
-E -> n
+﻿S
+b
+S
+S -> SS
+S -> b

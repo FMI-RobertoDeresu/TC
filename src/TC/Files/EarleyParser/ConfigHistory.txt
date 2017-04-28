@@ -1,0 +1,64 @@
+﻿Config:
+S M T
+n
+S
+S -> S+M
+S -> M
+M -> M*T
+M -> T
+T -> 1
+T -> 2
+T -> 3
+T -> 4
+
+Input:
+2+3*4
+
+--------------------
+Config:
+E
+n
+E
+E -> E+E
+E -> n
+
+Input:
+n+n
+
+--------------------
+Config:
+S A E
+a
+S
+S -> AAAA
+A -> a
+A -> E
+E -> ^
+
+Input:
+a
+
+--------------------
+Config:
+S
+a b
+S
+S -> aSbS
+S -> bSaS
+S -> ^
+
+Input:
+abba
+
+--------------------
+Config:
+S
+b
+S
+S -> SS
+S -> b
+
+Input:
+bb
+bbb
+bbbb

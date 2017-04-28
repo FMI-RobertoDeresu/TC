@@ -32,7 +32,7 @@ namespace TC
             {
                 Console.WriteLine(exception.Message);
                 ErrorsWriter.WriteLine();
-                ErrorsWriter.WriteLine($"{DateTime.Now:yyyy.mm.dd} - {exception.Message}");
+                ErrorsWriter.WriteLine($"{DateTime.Now:yyyy.MM.dd hh:mm:ss} - {exception.Message}");
                 ErrorsWriter.Flush();
             }
         }
@@ -59,8 +59,14 @@ namespace TC
 
             foreach (var input in File.ReadAllLines("Files/EarleyParser/Input.txt"))
             {
-                writer.WriteLine($"{input}:");
-                earleyParser.Compute(input).ToList().ForEach(writer.WriteLine);
+                var output = earleyParser.Compute(input);
+
+                var padding = output.Max(x => x.IndexOf('#')) + 10;
+                for (var index = 0; index < output.Count; index++)
+                    if (output[index].Contains("#"))
+                        output[index] = $"{output[index].Split('#')[0].PadRight(padding)}{output[index].Split('#')[1].Trim()}";
+
+                output.ForEach(writer.WriteLine);
                 writer.WriteLine();
             }
 

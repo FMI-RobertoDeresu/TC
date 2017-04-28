@@ -24,13 +24,9 @@ ATENTIE! La predare, voi testa programele cu alte date de intrare.
 
 Tema 2
 
-TERMEN DE PREDARE PENTRU PROIECTUL 2: 14 - 30 aprilie 2017. 
-Fiecare proiect poate fi ales de 3-4 persoane.
-Proiectele 1, 2, 6 vor fi realizate individual. La proiectele 3, 4, 5 puteti forma echipe de cate 2 persoane.
-
 1. Se dau elementele unei gramatici independente de context oarecare, G.
- a)Sa se verifice daca G este recursiva la stanga si in caz afirmativ sa se aplice algoritmul de eliminare a recursivitatii la stanga.
- b)Se citesc intregul k>=1 si un numar oarecare de siruri formate cu terminali si neterminali din G. Sa se determine pentru fiecare astfel de sir, w, multimile Firstk(w) si Followk(w).
+    a)Sa se verifice daca G este recursiva la stanga si in caz afirmativ sa se aplice algoritmul de eliminare a recursivitatii la stanga.
+    b)Se citesc intregul k>=1 si un numar oarecare de siruri formate cu terminali si neterminali din G. Sa se determine pentru fiecare astfel de sir, w, multimile Firstk(w) si Followk(w).
 
 2. Sa se scrie un program pentru implementarea algoritmului de analiza sintactica Earley. Programul primeste la intrare elementele unei gramatici independente de context oarecare. Programul accepta un numar oarecare de siruri peste alfabetul terminalilor. Pentru fiecare sir se creeaza si se afiseaza tabelele Earley corespondente si daca sirul apartine limbajului generat de gramatica,.afiseaza derivarile acelui sir plecand din simbolul de start.
 
@@ -41,3 +37,7 @@ Proiectele 1, 2, 6 vor fi realizate individual. La proiectele 3, 4, 5 puteti for
 5. Sa se scrie un program care implementeaza algoritmul pentru gramatici LR(1). Programul primeste la intrare elementele unei gramatici independente de context oarecare. Programul determina tabela de analiza sintactica asociata si decide daca gramatica data este LR(1). In caz afirmativ, programul permite citirea unui nr oarecare de siruri peste alfabetul terminalilor. Pentru fiecare sir terminal se determina, pe baza tabelei de analiza sintactica obtinuta, daca este in limbajul generat de gramatica respectiva iar in caz afirmativ se afiseaza derivarea sa dreapta (o succesiune de numere, fiecare numar reprezintand numarul productiei aplicate).
 
 6. Sa se studieze specificatia pentru generatorul de parser-e Bison. Sa se exemplifice pentru gramatica expresiilor si a instructiunilor repetitive din C sau C++.
+
+TERMEN DE PREDARE PENTRU PROIECTUL 2: 14 - 30 aprilie 2017. 
+Fiecare proiect poate fi ales de 3-4 persoane.
+Proiectele 1, 2, 6 vor fi realizate individual. La proiectele 3, 4, 5 puteti forma echipe de cate 2 persoane.

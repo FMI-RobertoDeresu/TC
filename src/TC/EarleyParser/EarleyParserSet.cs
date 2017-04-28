@@ -32,6 +32,6 @@ namespace TC.EarleyParser
         public int Size => States.Count;
 
         public bool IsComplete(string startState) =>
-            States.Any(x => x.Left == Constants.GrammarPreStartSymbol && x.Right == $"{startState}.");
+            States.Any(x => x.Left == $"{startState}'" && x.Right == $"{startState}.");
     }
 }

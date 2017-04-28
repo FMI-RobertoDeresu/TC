@@ -1,1 +1,33 @@
-﻿
+S(0): .bbb
+(1) S' -> .S (0)           start rule
+(2) S -> .SS (0)           predict from (1)
+(3) S -> .b (0)            predict from (1)
+
+S(1): b.bb
+(1) S -> b. (0)            scan from S(0)(3)
+(2) S -> S.S (0)           complete from (1) and S(0)(2)
+(3) S' -> S. (0)           complete from (1) and S(0)(1)
+(4) S -> .SS (1)           predict from (2)
+(5) S -> .b (1)            predict from (2)
+
+S(2): bb.b
+(1) S -> b. (1)            scan from S(1)(5)
+(2) S -> S.S (1)           complete from (1) and S(1)(4)
+(3) S -> SS. (0)           complete from (1) and S(1)(2)
+(4) S -> S.S (0)           complete from (3) and S(0)(2)
+(5) S' -> S. (0)           complete from (3) and S(0)(1)
+(6) S -> .SS (2)           predict from (2)
+(7) S -> .b (2)            predict from (2)
+
+S(3): bbb.
+(1) S -> b. (2)            scan from S(2)(7)
+(2) S -> S.S (2)           complete from (1) and S(2)(6)
+(3) S -> SS. (0)           complete from (1) and S(2)(4)
+(4) S -> SS. (1)           complete from (1) and S(2)(2)
+(5) S -> S.S (0)           complete from (3) and S(0)(2)
+(6) S' -> S. (0)           complete from (3) and S(0)(1)
+(7) S -> S.S (1)           complete from (4) and S(1)(4)
+(8) S -> .SS (3)           predict from (2)
+(9) S -> .b (3)            predict from (2)
+
+Accepted!
