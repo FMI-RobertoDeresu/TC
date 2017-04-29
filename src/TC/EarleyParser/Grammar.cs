@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace TC.EarleyParser
 {
@@ -41,5 +42,21 @@ namespace TC.EarleyParser
         public string S { get; set; }
 
         public IList<Production> P { get; set; }
+
+        public IList<Production> NonTermProds(string n)
+        {
+            return P.Where(x => x.Left == n).ToList();
+        }
+
+        public bool NonTermCanBeLambda(string n)
+        {
+            if (P.Any(x => x.Left == n && x.Right == Constants.Lambda.ToString()))
+                return true;
+
+            return NonTermProds(n)
+                .Where(x => !x.Right.Contains(n) && x.Right.All(c => N.Contains(c.ToString())))
+                .Aggregate(false, (a, b) => a || b.Right
+                                                .Aggregate(true, (c, d) => c && NonTermCanBeLambda(d.ToString())));
+        }
     }
 }

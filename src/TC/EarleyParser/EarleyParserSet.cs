@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace TC.EarleyParser
 {
@@ -16,22 +15,30 @@ namespace TC.EarleyParser
 
         public IList<EarleyParserState> States { get; }
 
-        public EarleyParserState AddState(string left, string right, int origin)
+        public EarleyParserState AddState(string ruleLeft, string ruleRight, int positionFrom, int positionTo,
+            string operation)
         {
-            var newState = new EarleyParserState(left, right, origin);
+            return AddState(ruleLeft, ruleRight, positionFrom, positionTo, null, operation);
+        }
+
+        public EarleyParserState AddState(string ruleLeft, string ruleRight, int positionFrom, int positionTo,
+            EarleyParserState[] backPointer, string operation)
+        {
+            var newState = new EarleyParserState(ruleLeft, ruleRight, positionFrom, positionTo, backPointer, operation);
             var existingState = States.FirstOrDefault(x => x.Equals(newState));
 
             if (existingState == null)
                 States.Add(newState);
             else
+            {
+                newState.Dispose();
                 newState = null;
+            }
 
             return newState;
         }
 
-        public int Size => States.Count;
-
         public bool IsComplete(string startState) =>
-            States.Any(x => x.Left == $"{startState}'" && x.Right == $"{startState}.");
+            States.Any(x => x.IsComplete && x.RuleLeft == $"{startState}'");
     }
 }

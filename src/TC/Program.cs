@@ -59,7 +59,7 @@ namespace TC
 
             foreach (var input in File.ReadAllLines("Files/EarleyParser/Input.txt"))
             {
-                var output = earleyParser.Compute(input);
+                var output = earleyParser.Parse(input);
 
                 var padding = output.Max(x => x.IndexOf('#')) + 10;
                 for (var index = 0; index < output.Count; index++)

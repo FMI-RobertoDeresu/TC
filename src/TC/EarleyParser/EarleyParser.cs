@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TC.EarleyParser
@@ -26,127 +27,105 @@ namespace TC.EarleyParser
 
         public Grammar Grammar { get; set; }
 
-        public List<string> Compute(string input)
+        public List<string> Parse(string input)
         {
-            var output = new List<string>();
+            var output = Enumerable.Range(0, input.Length + 1).Select(x => new List<string>()).ToList();
             var s = new List<EarleyParserSet> { new EarleyParserSet(0) };
-            output.Add($"S(0): {input.Insert(0, ".")}");
+            var initialState = s[0].AddState($"{Grammar.S}'", $".{Grammar.S}", 0, 0, "initial state");
+            output[0].Add(initialState.ToString());
 
-            s.First().AddState($"{Grammar.S}'", $".{Grammar.S}", 0);
-            output.Add($"(1) {s.First().States.First()} # start rule");
-
-            s = SPC('\0', 0, s, output);
-            output.Add(string.Empty);
-
-            var cs = s;
-            for (var i = 1; i <= input.Length; i++)
-            {             
-                s.Add(new EarleyParserSet(i));
-                output.Add($"S({i}): {input.Insert(i, ".")}");
-
-                s = SPC(input[i - 1], i, s, output);
-                output.Add(string.Empty);
+            for (var i = 0; i <= input.Length; i++)
+            {
+                var pos = i == input.Length ? '\0' : input[i];
+                output[i].Insert(0, $"S({i}): {input.Insert(i, ".")}");
+                for (var si = 0; si < (s[i]?.States.Count ?? 0); si++)
+                {
+                    var state = s[i].States[si];
+                    if (!state.IsComplete && state.DotsNext == pos)
+                        Scanner(pos, state, s, output);
+                    else if (!state.IsComplete && state.DotsNext != pos)
+                        Predictor(pos, state, s, output);
+                    else if (state.IsComplete)
+                        Completer(state, s, output);
+                }
+                output[i].Add(string.Empty);
             }
 
             var accepted = s.LastOrDefault()?.IsComplete(Grammar.S) ?? false;
-            output.Add(accepted ? "Accepted!" : "Rejected!");
+            output.Last().Add(accepted ? "Accepted!\n" : "Rejected!");
 
-            return output;
+            if (accepted)
+                BuidTrees(s, output);
+
+            return output.SelectMany(x => x).ToList();
         }
 
-        public List<EarleyParserSet> SPC(char a, int i, List<EarleyParserSet> S, List<string> output)
+        private void Scanner(char pos, EarleyParserState state, List<EarleyParserSet> s, List<List<string>> output)
         {
-            var hasChanges = true;
-            while (hasChanges)
+            if (!state.IsComplete && state.DotsNext == pos)
             {
-                var l = S[i].States.Count;
-                S = Complete(i, Predict(i, Scan(a, i, S, output), output), output);
-                hasChanges = l != S[i].States.Count;
+                var j = state.PositionFrom;
+                var i = state.PositionTo;
+                if (s.Count == i + 1)
+                    s.Add(new EarleyParserSet(i + 1));
+                var newState = s[i + 1].AddState(state.RuleLeft, state.DotToRight, j, i + 1, "scanner");
+                if (newState != null)
+                    output[i + 1].Add($"{newState}");
             }
-
-            return S;
         }
 
-        public List<EarleyParserSet> Scan(char a, int i, List<EarleyParserSet> S, List<string> output)
+        private void Predictor(char pos, EarleyParserState state, List<EarleyParserSet> s, List<List<string>> output)
         {
-            if (i == 0)
-                return S;
-
-            var currentSet = S.Last();
-            var prevSet = S.Skip(i - 1).First();
-            foreach (var state in prevSet.States)
+            if (!state.IsComplete && state.DotsNext != pos)
             {
-                var stateIndex = prevSet.States.IndexOf(state);
-                if (state.DotsNext == a)
+                var i = state.PositionTo;
+                foreach (var production in Grammar.NonTermProds(state.DotsNext.ToString()))
                 {
-                    var newState = currentSet.AddState(state.Left, state.DotToRight, state.Origin);
+                    var newState = s[i].AddState(production.Left, $".{production.Right}", i, i, "predictor");
                     if (newState != null)
-                        output.Add($"({currentSet.Size}) {newState} # scan from S({i - 1})({stateIndex + 1})");
+                        output[i].Add($"{newState}");
+                }
+
+                if (Grammar.NonTermCanBeLambda(state.DotsNext.ToString()))
+                {
+                    var newState = s[i].AddState(state.RuleLeft, state.DotToRight, i, i, "predictor *lambda");
+                    if (newState != null)
+                        output[i].Add($"{newState}");
                 }
             }
-
-            return S;
         }
 
-        public List<EarleyParserSet> Predict(int i, List<EarleyParserSet> S, List<string> output)
+        private void Completer(EarleyParserState state, List<EarleyParserSet> s, List<List<string>> output)
         {
-            var currentSet = S.Last();
-            var hasNewPredictions = true;
-
-            while (hasNewPredictions)
+            if (state.IsComplete)
             {
-                hasNewPredictions = false;
-                var currentStates = currentSet.States.ToList();
-                foreach (var state in currentStates)
+                var j = state.PositionFrom;
+                var i = state.PositionTo;
+                var incStates = s[j].States.Where(x => x.DotsNext.ToString() == state.RuleLeft && x.PositionTo == j).ToList();
+                foreach (var incState in incStates)
                 {
-                    var stateIndex = currentStates.IndexOf(state);
-                    foreach (var production in Grammar.P.Where(x => x.Left == state.DotsNext.ToString()))
-                    {
-                        var newState = currentSet.AddState(production.Left, $".{production.Right}", i);
-                        if (newState != null)
-                        {
-                            hasNewPredictions = true;
-                            output.Add($"({currentSet.Size}) {newState} # predict from ({stateIndex + 1})");
-                        }
-                    }
+                    var backPointer = incState.DotPosition == 0 ? new[] { state } : new[] { incState, state };
+                    var k = incState.PositionFrom;
+                    var newState = s[i].AddState(incState.RuleLeft, incState.DotToRight, k, i, backPointer, "completer");
+                    if (newState != null)
+                        output[i].Add($"{newState}");
                 }
             }
-
-            return S;
         }
 
-        public List<EarleyParserSet> Complete(int i, List<EarleyParserSet> S, List<string> output)
+        private void BuidTrees(List<EarleyParserSet> s, List<List<string>> output)
         {
-            var currentSet = S.Last();
-            var hasNewCompletedStates = true;
+            var treeRoots = s.Last().States.Where(x => x.IsComplete && x.RuleLeft == $"{Grammar.S}'").ToList();
 
-            while (hasNewCompletedStates)
+            output.Add(new List<string>());
+            foreach (var treeRoot in treeRoots)
             {
-                hasNewCompletedStates = false;
-                var currentStates = currentSet.States.ToList();
-                var completeStates = currentStates.Where(x => x.IsComplete).ToList();
-                foreach (var completeState in completeStates)
-                {
-                    var completeStateIndex = currentStates.IndexOf(completeState);
-                    foreach (var prevSet in S.Where(x => x.Index == completeState.Origin).ToArray().Reverse())
-                    {
-                        var prevSetIndex = S.IndexOf(prevSet);
-                        foreach (var prevState in prevSet.States.Where(x => x.DotsNext.ToString() == completeState.Left).Reverse())
-                        {
-                            var prevStateIndex = prevSet.States.IndexOf(prevState);
-                            var newState = currentSet.AddState(prevState.Left, prevState.DotToRight, prevState.Origin);
-                            if (newState != null)
-                            {
-                                hasNewCompletedStates = true;
-                                output.Add($"({currentSet.Size}) {newState} # complete from ({completeStateIndex + 1}) and " +
-                                           $"S({prevSetIndex})({prevStateIndex + 1})");
-                            }
-                        }
-                    }
-                }
+                var nodes = treeRoot.TreeBackPointers().Where(x => x.IsComplete)
+                    .Union(new[] { treeRoot }).OrderBy(x => x.Id).ToList();
+                output.Last().Add($"Tree {treeRoots.IndexOf(treeRoot)}:");
+                nodes.ForEach(x => output.Last().Add($"{x}"));
+                output.Last().Add(string.Empty);
             }
-
-            return S;
         }
     }
 }

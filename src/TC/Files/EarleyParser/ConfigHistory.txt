@@ -1,18 +1,15 @@
 ﻿Config:
 S M T
-n
+n + *
 S
 S -> S+M
 S -> M
 M -> M*T
 M -> T
-T -> 1
-T -> 2
-T -> 3
-T -> 4
+T -> n
 
 Input:
-2+3*4
+n+n*n
 
 --------------------
 Config:
