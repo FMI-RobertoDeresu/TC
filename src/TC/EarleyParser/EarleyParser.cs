@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace TC.EarleyParser
@@ -31,13 +30,17 @@ namespace TC.EarleyParser
         {
             var output = Enumerable.Range(0, input.Length + 1).Select(x => new List<string>()).ToList();
             var s = new List<EarleyParserSet> { new EarleyParserSet(0) };
-            var initialState = s[0].AddState($"{Grammar.S}'", $".{Grammar.S}", 0, 0, "initial state");
+            var initialState = s[0].AddState($"{Grammar.S}'", $".{Grammar.S}", 0, 0, "stare initiala");
             output[0].Add(initialState.ToString());
 
             for (var i = 0; i <= input.Length; i++)
             {
                 var pos = i == input.Length ? '\0' : input[i];
                 output[i].Insert(0, $"S({i}): {input.Insert(i, ".")}");
+
+                if (i == s.Count)
+                    break;
+
                 for (var si = 0; si < (s[i]?.States.Count ?? 0); si++)
                 {
                     var state = s[i].States[si];
@@ -48,14 +51,15 @@ namespace TC.EarleyParser
                     else if (state.IsComplete)
                         Completer(state, s, output);
                 }
+
                 output[i].Add(string.Empty);
             }
 
-            var accepted = s.LastOrDefault()?.IsComplete(Grammar.S) ?? false;
-            output.Last().Add(accepted ? "Accepted!\n" : "Rejected!");
+            var accepted = s.Count == input.Length + 1 && (s.LastOrDefault()?.IsComplete(Grammar.S) ?? false);
+            output.Last().Add(accepted ? "Acceptat!\n\n" : "Respins!\n\n");
 
-            if (accepted)
-                BuidTrees(s, output);
+            //if (accepted)
+            //    BuidTrees(s, output);
 
             return output.SelectMany(x => x).ToList();
         }
@@ -68,7 +72,7 @@ namespace TC.EarleyParser
                 var i = state.PositionTo;
                 if (s.Count == i + 1)
                     s.Add(new EarleyParserSet(i + 1));
-                var newState = s[i + 1].AddState(state.RuleLeft, state.DotToRight, j, i + 1, "scanner");
+                var newState = s[i + 1].AddState(state.RuleLeft, state.DotToRight, j, i + 1, "scanare");
                 if (newState != null)
                     output[i + 1].Add($"{newState}");
             }
@@ -81,14 +85,14 @@ namespace TC.EarleyParser
                 var i = state.PositionTo;
                 foreach (var production in Grammar.NonTermProds(state.DotsNext.ToString()))
                 {
-                    var newState = s[i].AddState(production.Left, $".{production.Right}", i, i, "predictor");
+                    var newState = s[i].AddState(production.Left, $".{production.Right}", i, i, "productie");
                     if (newState != null)
                         output[i].Add($"{newState}");
                 }
 
                 if (Grammar.NonTermCanBeLambda(state.DotsNext.ToString()))
                 {
-                    var newState = s[i].AddState(state.RuleLeft, state.DotToRight, i, i, "predictor *lambda");
+                    var newState = s[i].AddState(state.RuleLeft, state.DotToRight, i, i, "productie *lambda");
                     if (newState != null)
                         output[i].Add($"{newState}");
                 }
@@ -106,7 +110,7 @@ namespace TC.EarleyParser
                 {
                     var backPointer = incState.DotPosition == 0 ? new[] { state } : new[] { incState, state };
                     var k = incState.PositionFrom;
-                    var newState = s[i].AddState(incState.RuleLeft, incState.DotToRight, k, i, backPointer, "completer");
+                    var newState = s[i].AddState(incState.RuleLeft, incState.DotToRight, k, i, backPointer, "completare");
                     if (newState != null)
                         output[i].Add($"{newState}");
                 }

@@ -32,3 +32,58 @@ Parameter name: index
 
 2017.04.29 01:39:14 - Index was out of range. Must be non-negative and less than the size of the collection.
 Parameter name: index
+
+2017.05.16 08:42:51 - Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+
+2017.05.16 11:00:49 - Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+
+2017.05.16 11:01:02 - Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+
+2017.05.16 11:01:46 - Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at TC.EarleyParser.EarleyParser.Parse(String input) in E:\BestProgrammer\Workspace\TC\src\TC\EarleyParser\EarleyParser.cs:line 41
+   at TC.Program.RunEarleyParser() in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 63
+   at TC.Program.Main(String[] args) in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 25
+
+2017.05.16 11:02:29
+System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at TC.EarleyParser.EarleyParser.Parse(String input) in E:\BestProgrammer\Workspace\TC\src\TC\EarleyParser\EarleyParser.cs:line 41
+   at TC.Program.RunEarleyParser() in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 63
+   at TC.Program.Main(String[] args) in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 25
+
+2017.05.16 11:03:59
+System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at TC.EarleyParser.EarleyParser.Parse(String input) in E:\BestProgrammer\Workspace\TC\src\TC\EarleyParser\EarleyParser.cs:line 41
+   at TC.Program.RunEarleyParser() in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 63
+   at TC.Program.Main(String[] args) in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 25
+
+2017.05.16 11:04:12
+System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at TC.EarleyParser.EarleyParser.Parse(String input) in E:\BestProgrammer\Workspace\TC\src\TC\EarleyParser\EarleyParser.cs:line 41
+   at TC.Program.RunEarleyParser() in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 63
+   at TC.Program.Main(String[] args) in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 25
+
+2017.05.16 11:05:31
+System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at TC.EarleyParser.EarleyParser.Parse(String input) in E:\BestProgrammer\Workspace\TC\src\TC\EarleyParser\EarleyParser.cs:line 41
+   at TC.Program.RunEarleyParser() in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 63
+   at TC.Program.Main(String[] args) in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 25

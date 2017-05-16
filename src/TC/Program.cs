@@ -32,7 +32,8 @@ namespace TC
             {
                 Console.WriteLine(exception.Message);
                 ErrorsWriter.WriteLine();
-                ErrorsWriter.WriteLine($"{DateTime.Now:yyyy.MM.dd hh:mm:ss} - {exception.Message}");
+                ErrorsWriter.WriteLine($"{DateTime.Now:yyyy.MM.dd hh:mm:ss}");
+                ErrorsWriter.WriteLine(exception);
                 ErrorsWriter.Flush();
             }
         }
