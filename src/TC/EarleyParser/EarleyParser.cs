@@ -101,7 +101,7 @@ namespace TC.EarleyParser
 
         private void Completer(EarleyParserState state, List<EarleyParserSet> s, List<List<string>> output)
         {
-            if (state.IsComplete)
+            if (state.IsComplete && state.RuleRight.Length > 1)
             {
                 var j = state.PositionFrom;
                 var i = state.PositionTo;

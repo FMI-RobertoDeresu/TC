@@ -87,3 +87,19 @@ Parameter name: index
    at TC.EarleyParser.EarleyParser.Parse(String input) in E:\BestProgrammer\Workspace\TC\src\TC\EarleyParser\EarleyParser.cs:line 41
    at TC.Program.RunEarleyParser() in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 63
    at TC.Program.Main(String[] args) in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 25
+
+2017.05.17 04:30:26
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at System.String.get_Chars(Int32 index)
+   at TC.EarleyParser.EarleyParserState.get_DotsNext() in E:\BestProgrammer\Workspace\TC\src\TC\EarleyParser\EarleyParserState.cs:line 42
+   at TC.EarleyParser.EarleyParser.Parse(String input) in E:\BestProgrammer\Workspace\TC\src\TC\EarleyParser\EarleyParser.cs:line 47
+   at TC.Program.RunEarleyParser() in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 63
+   at TC.Program.Main(String[] args) in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 25
+
+2017.05.17 04:30:35
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at System.String.get_Chars(Int32 index)
+   at TC.EarleyParser.EarleyParserState.get_DotsNext() in E:\BestProgrammer\Workspace\TC\src\TC\EarleyParser\EarleyParserState.cs:line 42
+   at TC.EarleyParser.EarleyParser.Parse(String input) in E:\BestProgrammer\Workspace\TC\src\TC\EarleyParser\EarleyParser.cs:line 47
+   at TC.Program.RunEarleyParser() in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 63
+   at TC.Program.Main(String[] args) in E:\BestProgrammer\Workspace\TC\src\TC\Program.cs:line 25

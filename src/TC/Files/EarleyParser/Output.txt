@@ -1,124 +1,77 @@
-S(0): .n+n
-(1) E' -> .E [0,0] (stare initiala)
-(2) E -> .E+E [0,0] (productie)
-(3) E -> .n [0,0] (productie)
+S(0): .abbaa
+(1) S' -> .S [0,0] (stare initiala)
+(2) S -> .aSbS [0,0] (productie)
+(3) S -> .bSaS [0,0] (productie)
+(4) S -> . [0,0] (productie)
+(5) S' -> S. [0,0] (productie *lambda)
 
-S(1): n.+n
-(4) E -> n. [0,1] (scanare)
-(5) E' -> E. [0,1] (completare) (4)
-(6) E -> E.+E [0,1] (completare) (4)
+S(1): a.bbaa
+(6) S -> a.SbS [0,1] (scanare)
+(7) S -> .aSbS [1,1] (productie)
+(8) S -> .bSaS [1,1] (productie)
+(9) S -> . [1,1] (productie)
+(10) S -> aS.bS [1,1] (productie *lambda)
 
-S(2): n+.n
-(7) E -> E+.E [0,2] (scanare)
-(8) E -> .E+E [2,2] (productie)
-(9) E -> .n [2,2] (productie)
+S(2): ab.baa
+(11) S -> b.SaS [1,2] (scanare)
+(12) S -> aSb.S [1,2] (scanare)
+(13) S -> .aSbS [2,2] (productie)
+(14) S -> .bSaS [2,2] (productie)
+(15) S -> . [2,2] (productie)
+(16) S -> bS.aS [2,2] (productie *lambda)
+(17) S -> aSbS. [2,2] (productie *lambda)
+(19) S -> bS.aS [1,2] (completare) (11, 17)
+(20) S -> aSbS. [1,2] (completare) (12, 17)
+(21) S -> aS.bS [0,2] (completare) (6, 20)
 
-S(3): n+n.
-(10) E -> n. [2,3] (scanare)
-(11) E -> E+E. [0,3] (completare) (7, 10)
-(12) E -> E.+E [2,3] (completare) (10)
-(13) E' -> E. [0,3] (completare) (11)
-(14) E -> E.+E [0,3] (completare) (11)
+S(3): abb.aa
+(18) S -> b.SaS [2,3] (scanare)
+(22) S -> aSb.S [0,3] (scanare)
+(23) S -> .aSbS [3,3] (productie)
+(24) S -> .bSaS [3,3] (productie)
+(25) S -> . [3,3] (productie)
+(26) S -> bS.aS [3,3] (productie *lambda)
+(27) S -> aSbS. [3,3] (productie *lambda)
+(30) S -> bS.aS [2,3] (completare) (18, 27)
+(31) S -> aSbS. [0,3] (completare) (22, 27)
+(33) S' -> S. [0,3] (completare) (31)
 
-Acceptat!
+S(4): abba.a
+(28) S -> a.SbS [3,4] (scanare)
+(29) S -> bSa.S [3,4] (scanare)
+(32) S -> bSa.S [2,4] (scanare)
+(34) S -> .aSbS [4,4] (productie)
+(35) S -> .bSaS [4,4] (productie)
+(36) S -> . [4,4] (productie)
+(37) S -> aS.bS [4,4] (productie *lambda)
+(38) S -> bSaS. [4,4] (productie *lambda)
+(40) S -> aS.bS [3,4] (completare) (28, 38)
+(41) S -> bSaS. [3,4] (completare) (29, 38)
+(42) S -> bSaS. [2,4] (completare) (32, 38)
+(43) S -> bS.aS [2,4] (completare) (18, 41)
+(44) S -> aSbS. [0,4] (completare) (22, 41)
+(45) S -> bS.aS [1,4] (completare) (11, 42)
+(46) S -> aSbS. [1,4] (completare) (12, 42)
+(48) S' -> S. [0,4] (completare) (44)
+(50) S -> aS.bS [0,4] (completare) (6, 46)
 
-S(0): .n+n+
-(15) E' -> .E [0,0] (stare initiala)
-(16) E -> .E+E [0,0] (productie)
-(17) E -> .n [0,0] (productie)
-
-S(1): n.+n+
-(18) E -> n. [0,1] (scanare)
-(19) E' -> E. [0,1] (completare) (18)
-(20) E -> E.+E [0,1] (completare) (18)
-
-S(2): n+.n+
-(21) E -> E+.E [0,2] (scanare)
-(22) E -> .E+E [2,2] (productie)
-(23) E -> .n [2,2] (productie)
-
-S(3): n+n.+
-(24) E -> n. [2,3] (scanare)
-(25) E -> E+E. [0,3] (completare) (21, 24)
-(26) E -> E.+E [2,3] (completare) (24)
-(27) E' -> E. [0,3] (completare) (25)
-(28) E -> E.+E [0,3] (completare) (25)
-
-S(4): n+n+.
-(29) E -> E+.E [2,4] (scanare)
-(30) E -> E+.E [0,4] (scanare)
-(31) E -> .E+E [4,4] (productie)
-(32) E -> .n [4,4] (productie)
+S(5): abbaa.
+(39) S -> a.SbS [4,5] (scanare)
+(47) S -> bSa.S [2,5] (scanare)
+(49) S -> bSa.S [1,5] (scanare)
+(51) S -> .aSbS [5,5] (productie)
+(52) S -> .bSaS [5,5] (productie)
+(53) S -> . [5,5] (productie)
+(54) S -> aS.bS [5,5] (productie *lambda)
+(55) S -> bSaS. [5,5] (productie *lambda)
+(56) S -> aS.bS [4,5] (completare) (39, 55)
+(57) S -> bSaS. [2,5] (completare) (47, 55)
+(58) S -> bSaS. [1,5] (completare) (49, 55)
+(59) S -> bS.aS [1,5] (completare) (11, 57)
+(60) S -> aSbS. [1,5] (completare) (12, 57)
+(61) S -> aS.bS [0,5] (completare) (6, 58)
 
 Respins!
 
-S(0): .nn+nn
-(33) E' -> .E [0,0] (stare initiala)
-(34) E -> .E+E [0,0] (productie)
-(35) E -> .n [0,0] (productie)
 
-S(1): n.n+nn
-(36) E -> n. [0,1] (scanare)
-(37) E' -> E. [0,1] (completare) (36)
-(38) E -> E.+E [0,1] (completare) (36)
-
-S(2): nn.+nn
-Respins!
-
-S(0): .n+n+n+n
-(39) E' -> .E [0,0] (stare initiala)
-(40) E -> .E+E [0,0] (productie)
-(41) E -> .n [0,0] (productie)
-
-S(1): n.+n+n+n
-(42) E -> n. [0,1] (scanare)
-(43) E' -> E. [0,1] (completare) (42)
-(44) E -> E.+E [0,1] (completare) (42)
-
-S(2): n+.n+n+n
-(45) E -> E+.E [0,2] (scanare)
-(46) E -> .E+E [2,2] (productie)
-(47) E -> .n [2,2] (productie)
-
-S(3): n+n.+n+n
-(48) E -> n. [2,3] (scanare)
-(49) E -> E+E. [0,3] (completare) (45, 48)
-(50) E -> E.+E [2,3] (completare) (48)
-(51) E' -> E. [0,3] (completare) (49)
-(52) E -> E.+E [0,3] (completare) (49)
-
-S(4): n+n+.n+n
-(53) E -> E+.E [2,4] (scanare)
-(54) E -> E+.E [0,4] (scanare)
-(55) E -> .E+E [4,4] (productie)
-(56) E -> .n [4,4] (productie)
-
-S(5): n+n+n.+n
-(57) E -> n. [4,5] (scanare)
-(58) E -> E+E. [2,5] (completare) (53, 57)
-(59) E -> E+E. [0,5] (completare) (54, 57)
-(60) E -> E.+E [4,5] (completare) (57)
-(61) E -> E.+E [2,5] (completare) (58)
-(62) E' -> E. [0,5] (completare) (59)
-(63) E -> E.+E [0,5] (completare) (59)
-
-S(6): n+n+n+.n
-(64) E -> E+.E [4,6] (scanare)
-(65) E -> E+.E [2,6] (scanare)
-(66) E -> E+.E [0,6] (scanare)
-(67) E -> .E+E [6,6] (productie)
-(68) E -> .n [6,6] (productie)
-
-S(7): n+n+n+n.
-(69) E -> n. [6,7] (scanare)
-(70) E -> E+E. [4,7] (completare) (64, 69)
-(71) E -> E+E. [2,7] (completare) (65, 69)
-(72) E -> E+E. [0,7] (completare) (66, 69)
-(73) E -> E.+E [6,7] (completare) (69)
-(74) E -> E.+E [4,7] (completare) (70)
-(75) E -> E.+E [2,7] (completare) (71)
-(76) E' -> E. [0,7] (completare) (72)
-(77) E -> E.+E [0,7] (completare) (72)
-
-Acceptat!
 

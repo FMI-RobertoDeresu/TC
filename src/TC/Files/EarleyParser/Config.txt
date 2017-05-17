@@ -1,5 +1,6 @@
-﻿E
-n
-E
-E -> E+E
-E -> n
+﻿S
+a b
+S
+S -> aSbS
+S -> bSaS
+S -> ^
